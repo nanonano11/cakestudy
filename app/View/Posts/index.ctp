@@ -2,7 +2,7 @@
 <p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
 <table>
     <tr>
-        <th>Id</th>
+        <th>Ids</th>
         <th>Title</th>
         <th>Actions</th>
         <th>Created</th>
