@@ -1,10 +1,24 @@
-<?php 
+<?php
 class PostsController extends AppController {
     public $helpers = array('Html', 'Form', 'Flash');
     public $components = array('Flash');
 
     public function index() {
+        // $post = $this->Post->find('all', array(
+        //   // 'conditions' => array(
+        //   //   'id' => 1
+        //   // )
+        //   // 'order' => array('id' => 'DESC')
+        //   'fields' => array(
+        //     'id', 'title'
+        //   )
+        // ));
+
         $this->set('posts', $this->Post->find('all'));
+
+
+        // echo 'aaa';
+        // exit;
     }
 
     public function view($id) {
@@ -21,15 +35,18 @@ class PostsController extends AppController {
 
     public function add() {
         if ($this->request->is('post')) {
-            $this->Post->create();
+          // debug($this->request->data);
+          // debug($_POST);
+          // exit;
+            //Added this line
+            $this->request->data['Post']['user_id'] = $this->Auth->user('id');
             if ($this->Post->save($this->request->data)) {
                 $this->Flash->success(__('Your post has been saved.'));
                 return $this->redirect(array('action' => 'index'));
             }
-            $this->Flash->error(__('Unable to add your post.'));
         }
     }
-    
+
   public function edit($id = null) {
     if (!$id) {
         throw new NotFoundException(__('Invalid post'));
@@ -72,4 +89,20 @@ public function delete($id) {
     return $this->redirect(array('action' => 'index'));
 }
 
+public function isAuthorized($user) {
+    // 登録済ユーザーは投稿できる
+    if ($this->action === 'add') {
+        return true;
+    }
+
+    // 投稿のオーナーは編集や削除ができる
+    if (in_array($this->action, array('edit', 'delete'))) {
+        $postId = (int) $this->request->params['pass'][0];
+        if ($this->Post->isOwnedBy($postId, $user['id'])) {
+            return true;
+        }
+    }
+
+    return parent::isAuthorized($user);
+}
 }

@@ -2,13 +2,13 @@
 <p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
 <table>
     <tr>
-        <th>Ids</th>
+        <th>Id</th>
         <th>Title</th>
         <th>Actions</th>
         <th>Created</th>
     </tr>
 
-<!-- ‚±‚±‚Å $posts ”z—ñ‚ðƒ‹[ƒv‚µ‚ÄA“Šeî•ñ‚ð•\Ž¦ -->
+<!-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ $posts ï¿½zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½ÄAï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ -->
 
     <?php foreach ($posts as $post): ?>
     <tr>
@@ -17,8 +17,13 @@
             <?php
                 echo $this->Html->link(
                     $post['Post']['title'],
-                    array('action' => 'view', $post['Post']['id'])
+                    array(
+                      'controller' => 'posts',
+                      'action' => 'view', $post['Post']['id'])
                 );
+
+                // echo $this->Html->link('hoge', '/posts/view/' . $post['Post']['id']);
+                // echo $this->Html->link('hoge', 'http://yahoo.co.jp');
             ?>
         </td>
         <td>
